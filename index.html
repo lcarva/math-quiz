@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Math Quiz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main id="setup-screen" class="screen">
+  <h1>Times Tables</h1>
+  <form id="setup-form">
+    <label>
+      From
+      <input type="number" id="start-input" value="1" min="0" max="20" inputmode="numeric">
+    </label>
+    <label>
+      To
+      <input type="number" id="end-input" value="12" min="0" max="20" inputmode="numeric">
+    </label>
+    <button type="submit">Start</button>
+  </form>
+</main>
+
+<main id="quiz-screen" class="screen hidden">
+  <div id="score">Score: <span id="score-count">0</span></div>
+  <div id="question"></div>
+  <form id="answer-form">
+    <input type="text" id="answer-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autofocus>
+    <button type="submit">Check</button>
+  </form>
+  <button id="change-range-btn" type="button">Change range</button>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
