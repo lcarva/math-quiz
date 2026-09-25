@@ -11,8 +11,13 @@
 <main id="setup-screen" class="screen">
   <h1>Times Tables</h1>
   <form id="setup-form">
+    <div>
+      <input type="radio" id="from-input" name="mode" value="from" checked />
+      <label for="from-input">From</label>
+      <input type="radio" id="focus-input" name="mode" value="focus" />
+      <label for="focus-input">Focus</label>
+    </div>
     <label>
-      From
       <input type="number" id="start-input" value="1" min="0" max="20" inputmode="numeric">
     </label>
     <label>

@@ -9,6 +9,7 @@ const questionEl = document.getElementById('question');
 const scoreCountEl = document.getElementById('score-count');
 const changeRangeBtn = document.getElementById('change-range-btn');
 
+let mode = 'from';
 let start = 1;
 let end = 12;
 let a = 0;
@@ -22,14 +23,22 @@ function randomBetween(min, max) {
 
 function nextQuestion() {
   let key;
-  do {
-    a = randomBetween(start, end);
-    b = randomBetween(start, end);
-    key = a + 'x' + b;
-  } while (key === lastQuestionKey);
+  if (mode == 'from') {
+    do {
+      a = randomBetween(start, end);
+      b = randomBetween(start, end);
+      key = a + ' x ' + b;
+    } while (key === lastQuestionKey);
+  } else {
+    do {
+      a = start;
+      b = randomBetween(start, end);
+      key = a + ' x ' + b;
+    } while (key === lastQuestionKey);
+  }
   lastQuestionKey = key;
 
-  questionEl.textContent = a + ' × ' + b;
+  questionEl.textContent = key;
   answerInput.value = '';
   answerInput.classList.remove('correct', 'wrong');
   answerInput.focus();
@@ -37,6 +46,7 @@ function nextQuestion() {
 
 setupForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  mode = document.querySelector('input[name="mode"]:checked').value;
   const s = parseInt(startInput.value, 10);
   const en = parseInt(endInput.value, 10);
   start = Number.isNaN(s) ? 1 : s;
