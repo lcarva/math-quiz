@@ -72,7 +72,7 @@ answerForm.addEventListener('submit', (e) => {
     answerInput.classList.add('correct');
     score += 1;
     scoreCountEl.textContent = score;
-    setTimeout(nextQuestion, 400);
+    nextQuestion();
   } else {
     answerInput.classList.remove('correct');
     answerInput.classList.add('wrong');
