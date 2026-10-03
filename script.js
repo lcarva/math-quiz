@@ -32,7 +32,7 @@ function nextQuestion() {
   } else {
     do {
       a = start;
-      b = randomBetween(start, end);
+      b = randomBetween(1, end);
       key = a + ' x ' + b;
     } while (key === lastQuestionKey);
   }
