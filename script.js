@@ -2,6 +2,7 @@
     const setupScreen = document.getElementById('setup-screen');
     const quizScreen = document.getElementById('quiz-screen');
     const setupForm = document.getElementById('setup-form');
+    const focusInput = document.getElementById('focus-input');
     const startInput = document.getElementById('start-input');
     const endInput = document.getElementById('end-input');
     const answerForm = document.getElementById('answer-form');
@@ -10,7 +11,7 @@
     const scoreCountEl = document.getElementById('score-count');
     const changeRangeBtn = document.getElementById('change-range-btn');
 
-    let mode = 'from';
+    let focus = 0;
     let start = 1;
     let end = 12;
     let a = 0;
@@ -24,7 +25,7 @@
 
     function nextQuestion() {
       let key;
-      if (mode == 'from') {
+      if (focus == 0) {
         do {
           a = randomBetween(start, end);
           b = randomBetween(start, end);
@@ -32,8 +33,8 @@
         } while (key === lastQuestionKey);
       } else {
         do {
-          a = start;
-          b = randomBetween(1, end);
+          a = focus;
+          b = randomBetween(start, end);
           key = a + ' x ' + b;
         } while (key === lastQuestionKey);
       }
@@ -47,11 +48,13 @@
 
     setupForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      mode = document.querySelector('input[name="mode"]:checked').value;
+      const fc = parseInt(focusInput.value, 10);
       const s = parseInt(startInput.value, 10);
       const en = parseInt(endInput.value, 10);
+      focus = Number.isNaN(fc) ? 0 : fc;
       start = Number.isNaN(s) ? 1 : s;
       end = Number.isNaN(en) ? 12 : en;
+      console.log('focus:', focus);
       if (start > end) {
         [start, end] = [end, start];
       }
