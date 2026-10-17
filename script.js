@@ -14,33 +14,28 @@
     let focus = 0;
     let start = 1;
     let end = 12;
-    let a = 0;
-    let b = 0;
     let score = 0;
-    let lastQuestionKey = '';
+    let questionsIndex = 0;
 
-    function randomBetween(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+    // List of questions with answers. Each item is an array with 3 items: a, b, answer.
+    let questions = null;
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 
     function nextQuestion() {
-      let key;
-      if (focus == 0) {
-        do {
-          a = randomBetween(start, end);
-          b = randomBetween(start, end);
-          key = a + ' x ' + b;
-        } while (key === lastQuestionKey);
-      } else {
-        do {
-          a = focus;
-          b = randomBetween(start, end);
-          key = a + ' x ' + b;
-        } while (key === lastQuestionKey);
+      questionsIndex = (questionsIndex + 1) % questions.length
+      if (questionsIndex == 0) {
+          shuffleArray(questions);
       }
-      lastQuestionKey = key;
+      let a, b;
+      [a, b, _] = questions[questionsIndex];
 
-      questionEl.textContent = key;
+      questionEl.textContent = a + ' x ' + b;
       answerInput.value = '';
       answerInput.classList.remove('correct', 'wrong');
       answerInput.focus();
@@ -54,13 +49,25 @@
       focus = Number.isNaN(fc) ? 0 : fc;
       start = Number.isNaN(s) ? 1 : s;
       end = Number.isNaN(en) ? 12 : en;
-      console.log('focus:', focus);
       if (start > end) {
         [start, end] = [end, start];
       }
+      questions = [];
+      if (focus == 0) {
+          for (let a = start; a <= end; a++) {
+              for (let b = start; b <= end; b++) {
+                  questions.push([a, b, a * b]);
+              }
+          }
+      } else {
+          for (let _b = start; _b <= end; _b++) {
+              questions.push([focus, _b, focus * _b]);
+          }
+      }
+      // nextQuestion will increment to 0.
+      questionsIndex = -1;
       score = 0;
       scoreCountEl.textContent = score;
-      lastQuestionKey = '';
       setupScreen.classList.add('hidden');
       quizScreen.classList.remove('hidden');
       nextQuestion();
@@ -69,8 +76,7 @@
     answerForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const guess = parseInt(answerInput.value, 10);
-      const correct = a * b;
-
+      const correct = questions[questionsIndex][2];
       if (guess === correct) {
         answerInput.classList.remove('wrong');
         answerInput.classList.add('correct');
